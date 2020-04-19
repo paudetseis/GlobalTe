@@ -1,12 +1,12 @@
 # GlobalTe
 
 Simple tools to extract and plot a global model of effective elastic thickness (<i>T<sub>e</sub></i>) 
-of the lithosphere. This (<i>T<sub>e</sub></i>) model was obtained from the inversion of the wavelet
+of the lithosphere. This <i>T<sub>e</sub></i> model was obtained from the inversion of the wavelet
 coherence between the topography and Bouguer gravity anomalies. See [Audet and Burgmann (2011)](#reference) 
 for details.
 
 See also the software [`PlateFlex`](https://paudetseis.github.io/PlateFlex/), which describes how to 
-produce regional grids of (<i>T<sub>e</sub></i>) using the wavelet transform.
+produce regional grids of <i>T<sub>e</sub></i> using the wavelet transform.
 
 ## Installation
 
@@ -47,12 +47,12 @@ pip install .
 
 ## Usage
 
-Once installed, you can produce a (<i>T<sub>e</sub></i>) map with three lines in `Python`:
+Once installed, you can produce a <i>T<sub>e</sub></i> map with three lines in `Python`:
 
 ```python
-from globalte import TeModel as TM
-model = TM()
-model.plot_global()
+>>> from globalte import TeModel as TM
+>>> model = TM()
+>>> model.plot_global()
 ```
 
 ![](./data/Global_Te.Robinson.png)
@@ -62,26 +62,39 @@ You can also specify to load a data set that does not include data points biased
 colormap:
 
 ```python
-model_nobias = TM(nobias=True)
-model_nobias.plot_global(proj='IGH', cmap='magma')
+>>> model_nobias = TM(nobias=True)
+>>> model_nobias.plot_global(proj='IGH', cmap='magma')
 ```
 
 ![](./data/Global_Te.nobias.IGH.png)
 
-The corresponding (<i>T<sub>e</sub></i>) grids are available as attributes of the `model` object:
+The corresponding <i>T<sub>e</sub></i> grids are available as attributes of the `model` object:
 
 ```python
-model.te_global
+>>> model.te_global
+array([[nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       ...,
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan]])
 ```
 
 ***
 **NOTE**
 
-Most data points are `NaN` since (<i>T<sub>e</sub></i>) is only calculated over 'dry' areas (including
+Most data points are `NaN` since <i>T<sub>e</sub></i> is only calculated over 'dry' areas (including
 shallow shelf areas).
 
 ***
 
+It is also possible to extract a <i>T<sub>e</sub></i> value at any arbitrary point on the globe:
+
+```python
+>>> model.get_te_point(62.3, -125.7)
+44.9015197754
+```
 
 ## Reference
 * [Audet, P. and Burgmann, R. Dominant role of tectonic inheritance in supercontinent cycles, *Nat. Geosci.*, 4, 184-187, 2011](https://www.nature.com/articles/ngeo1080?cacheBust=1508215971286)
