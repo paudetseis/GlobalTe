@@ -58,7 +58,7 @@ Once installed, you can produce a <i>T<sub>e</sub></i> map with three lines in `
 ![](./data/Global_Te.Robinson.png)
 
 You can also specify to load a data set that does not include data points biased by
-'gravitational noise'. You can also check out a different global projection and a different
+*gravitational noise*. You can also check out a different global projection and a different
 colormap:
 
 ```python
@@ -84,7 +84,7 @@ array([[nan, nan, nan, ..., nan, nan, nan],
 ***
 **NOTE**
 
-Most data points are `NaN` since <i>T<sub>e</sub></i> is only calculated over 'dry' areas (including
+Most data points are `NaN` since <i>T<sub>e</sub></i> is only calculated over *dry* areas (including
 shallow shelf areas).
 
 ***
