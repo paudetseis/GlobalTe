@@ -1,15 +1,36 @@
+# Copyright 2019 Pascal Audet
+#
+# This file is part of GlobalTe.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
+# -*- coding: utf-8 -*-
 import numpy as np
 from math import floor
 import inspect
 import os
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 
 class TeModel:
     """
-    Top level model object to retreive information from the global Te model
+    Top level object to retrieve information from the global Te model
     of Audet and Burgmann, 2011.
 
     Attributes
@@ -23,19 +44,31 @@ class TeModel:
     te_global : ndarray
     Elastic thickness grid
 
+    nobias : bool
+    If set to `True`, the grid will not include the points that are
+    biased by 'gravitational noise' (set to NaN). Otherwise all calculated
+    Te points are included [default].
+
     """
 
-    def __init__(self, data_path=os.path.dirname(inspect.stack()[0][1]) + '/../data/'):
+    def __init__(self, data_path=os.path.dirname(
+        inspect.stack()[0][1]) + '/../data/', nobias=False):
+
+        self.nobias = nobias
+        if self.nobias:
+            file = 'te_nobias.xyz'
+        else:
+            file = 'te_global.xyz'
 
         # Read in data files
-        te_data = np.loadtxt(data_path+'te_global.xyz')
+        te_data = np.loadtxt(data_path+file)
 
         # Reshape to a lon,lat,layer grid. The 0,0 index value
         # is at 90 south and 180 latitude.
         te_data = te_data.transpose()
-        self.lons = te_data[0].reshape(90, 180)
-        self.lats = te_data[1].reshape(90, 180)
-        self.te_global = te_data[2].reshape(90, 180)
+        self.lons = te_data[0].reshape(180, 360)
+        self.lats = te_data[1].reshape(180, 360)
+        self.te_global = te_data[2].reshape(180, 360)
 
     def _get_index(self, lat, lon):
         """
@@ -97,14 +130,27 @@ class TeModel:
 
         return self.te
 
-    def plot_global(self, proj='Robinson'):
+    def plot_global(self, proj='Robinson', cmap='Spectral_r', 
+        levels=20, save=False):
         """
         Plots the Te model on a global map. 
 
         Parameters
         ----------
         proj : str
-        String representing the global projection
+        String representing the global projection. Available projections
+        are 'Robinson' [default], 'Mollweide', and 'IGH' 
+        (for InterruptedGoodeHomolosine()).
+
+        cmap : str
+        Name of colormap used in map.
+
+        levels : int
+        Number of contours in colorscale.
+
+        save : bool
+        Whether or not [default] to save the figure as a `.png` file
+
         """
 
         # Specify projection
@@ -123,12 +169,18 @@ class TeModel:
 
         # self.mask = np.isnan(te)
         # te = np.ma.array(te, mask=self.mask)
-        ax.contourf(self.lons, self.lats, self.te_global,
+        cax = ax.contourf(self.lons, self.lats, self.te_global,
             transform=ccrs.PlateCarree(),
-            cmap='Spectral_r')
+            cmap=cmap, levels=levels)
         ax.coastlines()
         ax.gridlines()
         ax.set_global()
+        cbar = fig.colorbar(cax, orientation='horizontal',
+            fraction=0.035, aspect=30, pad=0.035)
+        cbar.set_label('Effective elastic thickness (km)', fontsize=10)
 
-        plt.show()
+        if save:
+            plt.savefig('Global_Te'+self.nobias*'.nobias'+'.png')
+        else:
+            plt.show()
 
