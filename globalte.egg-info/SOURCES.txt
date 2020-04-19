@@ -1,8 +1,0 @@
-README.md
-setup.py
-globalte/__init__.py
-globalte/model.py
-globalte.egg-info/PKG-INFO
-globalte.egg-info/SOURCES.txt
-globalte.egg-info/dependency_links.txt
-globalte.egg-info/top_level.txt
