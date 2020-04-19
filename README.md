@@ -45,6 +45,43 @@ cd GlobalTe
 pip install .
 ```
 
+## Usage
+
+Once installed, you can produce a (<i>T<sub>e</sub></i>) map with three lines in `Python`:
+
+```python
+from globalte import TeModel as TM
+model = TM()
+model.plot_global()
+```
+
+![](./data/Global_Te.Robinson.png')
+
+You can also specify to load a data set that does not include data points biased by
+'gravitational noise'. You can also check out a different global projection and a different
+colormap:
+
+```python
+model_nobias = TM(nobias=True)
+model.plot_global(proj='IGH', cmap='magma')
+```
+
+![](./data/Global_Te.nobias.IGH.png')
+
+The corresponding (<i>T<sub>e</sub></i>) grids are available as attributes of the `model` object:
+
+```python
+model.te_global
+```
+
+***
+**NOTE**
+
+Most data points are `NaN` since (<i>T<sub>e</sub></i>) is only calculated over 'dry' areas (including
+shallow shelf areas).
+
+***
+
 
 ## Reference
 * [Audet, P. and Burgmann, R. Dominant role of tectonic inheritance in supercontinent cycles, *Nat. Geosci.*, 4, 184-187, 2011](https://www.nature.com/articles/ngeo1080?cacheBust=1508215971286)

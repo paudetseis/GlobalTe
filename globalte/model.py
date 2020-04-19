@@ -180,7 +180,7 @@ class TeModel:
         cbar.set_label('Effective elastic thickness (km)', fontsize=10)
 
         if save:
-            plt.savefig('Global_Te'+self.nobias*'.nobias'+'.png')
+            plt.savefig('Global_Te'+self.nobias*'.nobias'+'.'+proj+'.png')
         else:
             plt.show()
 
