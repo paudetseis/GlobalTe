@@ -55,7 +55,7 @@ model = TM()
 model.plot_global()
 ```
 
-![](./data/Global_Te.Robinson.png')
+![](./data/Global_Te.Robinson.png)
 
 You can also specify to load a data set that does not include data points biased by
 'gravitational noise'. You can also check out a different global projection and a different
@@ -66,7 +66,7 @@ model_nobias = TM(nobias=True)
 model.plot_global(proj='IGH', cmap='magma')
 ```
 
-![](./data/Global_Te.nobias.IGH.png')
+![](./data/Global_Te.nobias.IGH.png)
 
 The corresponding (<i>T<sub>e</sub></i>) grids are available as attributes of the `model` object:
 
