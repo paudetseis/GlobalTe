@@ -63,7 +63,7 @@ colormap:
 
 ```python
 model_nobias = TM(nobias=True)
-model.plot_global(proj='IGH', cmap='magma')
+model_nobias.plot_global(proj='IGH', cmap='magma')
 ```
 
 ![](./data/Global_Te.nobias.IGH.png)
